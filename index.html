@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Crystal Game</title>
+  <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <style>
+        .h1 {color: white;
+            font-size: 40px;}
+        .h1box {background-color: #664b59;
+                width: 330px;
+                height: 50px;
+                padding: 50px;}
+        body {background-image: url("assets/images/background.jpg");
+            background-repeat: no-repeat;
+            background-size: 50%;}
+        .dirbox {margin-top: 20px;
+                background-color: #a57e7f;
+                width: 500px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                 }
+        .dir {color: white;
+            font-size: 15px;
+            line-height: 150%;}
+        .g1 {margin-top: 20px;
+            margin-right: 10px;}
+        .g2 {margin-right: 10px;}
+        .g3 {margin-right: 10px;}
+        .total {font-size: 15px;
+            color: white;}
+        .totalbox {width: 200px;
+            height: 40px;
+            margin-top: 20px;
+            padding-top: 20px;
+            background-color: #4b6b88;}
+        .compnum { color: white;
+        font-size: 50px;
+        margin-top: 50px;
+        }
+        .totalAdded { color: white;
+        font-size: 50px;}
+
+    </style>
+</head>
+<body>
+
+    <div class="h1box"><h1 class="h1">Crystals Collector!</h1></div>
+    <div class="dirbox"><p class="dir">You will be given a random number at the start of the game. <br>
+    There are four crystals below. By clicking on a crystal you will add a specific amount of points to your total score.<br>
+    You win the game by matching your total score to a random number, you lose the game if your total score goes above the random number<br>
+    The value of each crystal is hidden from you until you click on it.<br>
+    Each time when the game starts, the game will change the values of each crystal</p></div>
+    <div  style="height:150px; width:200px; background-color: #4b6b88; margin-top: 20px; position: absolute;"><h3 class= "compnum" id="compnum"></h3></div>
+    <div style="height:150px; width:150px; background-color: #9da7af; margin-top: 20px; position: relative; margin-left: 220px;" id="results"></div>
+    <img id="gOne" class="g1" src="assets/images/gemone.png" alt="Gem1">
+    <img id="gTwo" class="g2" src="assets/images/gemtwo.png" alt="Gem2">
+    <img id="gThree" class="g3" src="assets/images/gemthree.png" alt="Gem3">
+    <img id="gFour" class="g4" src="assets/images/gemfour.png" alt="Gem4">
+    <div class="totalbox"><p class="total">Your total score is</p></div>
+    <div style="height: 100px; width: 200px; background-color: #9da7af; margin-top: 20px; margin-bottom: 20px;"><p id="totalAdded" class="totalAdded"></p></div>
+    <button id="x" onclick="myFunctionTwo()"></button>
+
+
+    <script type="text/javascript">
+    var runningTotal = 0
+    console.log("before results")
+    var results = {
+                wins: 0,
+                losses: 0,
+                computerChoice: Math.floor((Math.random() * 120-19) + 19), 
+        }
+        console.log("after results")
+
+    function randomNumbers() {
+        console.log("hit random numbers")
+        results.computerChoice = Math.floor((Math.random() * 120-19) + 19);
+            console.log("new computer choice", results.computerChoice);
+            console.log("compnum Element",document.getElementById("compnum"));
+        document.getElementById("compnum").innerHTML = results.computerChoice;
+        var gemN1 = Math.floor((Math.random() * 12) + 1);
+        $("#gOne").attr("num", gemN1);
+        var gemN2 = Math.floor((Math.random() * 12) + 1);
+        $("#gTwo").attr("num", gemN2);
+        var gemN3 = Math.floor((Math.random() * 12) + 1);
+        $("#gThree").attr("num", gemN3);
+        var gemN4 = Math.floor((Math.random() * 12) + 1);
+        $("#gFour").attr("num", gemN4);
+        // document.getElementById("totalAdded").innerHTML = runningTotal;
+    }
+
+
+    
+    function printResults(){
+                var html = "";
+                html += "<div>Wins: " + results.wins + "</div>";
+                html += "<div>Losses: " + results.losses  + "</div>";
+                document.querySelector("#results").innerHTML = html;
+        }
+            
+
+    $(document).ready(function(){
+        randomNumbers();
+        printResults();
+        
+
+
+    $("#gOne").on("click", function(){
+        //
+        //get the num
+        var num = parseInt($("#gOne").attr("num"));
+        // console.log("number ", num);
+        //add it to the runnning total
+        // var total = parseInt($("#gOne"))+runningTotal;
+        var gemValue = $("#gOne").attr("num")
+        gemValue = parseInt(gemValue)
+        runningTotal = gemValue + runningTotal;
+        console.log('total', runningTotal)
+        //display current total
+        document.getElementById("totalAdded").innerHTML = runningTotal;
+        if (runningTotal === results.computerChoice) {
+            console.log("wins")
+                    results.wins++;
+                    printResults();
+                    randomNumbers();
+                    runningTotal("0")
+                }
+
+
+                if (runningTotal > results.computerChoice) {
+                     console.log("losses")
+                    results.losses++;
+                     printResults();
+                     randomNumbers();
+                     runningTotal("0");
+                }
+     });
+
+     $("#gTwo").on("click", function(){
+        
+        var num = parseInt($("#gTwo").attr("num"));
+        var gemValue = $("#gTwo").attr("num")
+        gemValue = parseInt(gemValue)
+        runningTotal = gemValue+runningTotal;
+        console.log('total', runningTotal)
+        document.getElementById("totalAdded").innerHTML = runningTotal;
+        if (runningTotal === results.computerChoice) {
+            console.log("wins")
+                    results.wins++;
+                    printResults();
+                    randomNumbers();
+                    runningTotal("0");
+
+                }
+
+
+                if (runningTotal > results.computerChoice) {
+                     console.log("losses")
+                    results.losses++;
+                    printResults();
+                    randomNumbers();
+                    runningTotal("0");
+                }
+     });
+
+     $("#gThree").on("click", function(){
+        
+        var num = parseInt($("#gThree").attr("num"));
+        var gemValue = $("#gThree").attr("num")
+        gemValue = parseInt(gemValue)
+        runningTotal = gemValue+runningTotal;
+        console.log('total', runningTotal)
+        document.getElementById("totalAdded").innerHTML = runningTotal;
+        if (runningTotal === results.computerChoice) {
+            console.log("wins")
+                    results.wins++;
+                    printResults();
+                    randomNumbers();
+                    runningTotal("0");
+                }
+
+
+                if (runningTotal > results.computerChoice) {
+                     console.log("losses")
+                    results.losses++;
+                    printResults();
+                    randomNumbers();
+                    runningTotal("0");
+                }
+     });
+
+      $("#gFour").on("click", function(){
+        
+        var num = parseInt($("#gFour").attr("num"));
+        var gemValue = $("#gFour").attr("num")
+        gemValue = parseInt(gemValue)
+        runningTotal = gemValue+runningTotal;
+        console.log('total', runningTotal)
+        document.getElementById("totalAdded").innerHTML = runningTotal;
+        if (runningTotal === results.computerChoice) {
+            console.log("wins")
+                    results.wins++;
+                    printResults();
+                    randomNumbers();
+                    runningTotal("0");
+                }
+
+
+                if (runningTotal > results.computerChoice) {
+                     console.log("losses");
+                    results.losses++;
+                    printResults();
+                    randomNumbers();
+                    runningTotal("0");
+                }
+     });
+
+
+});
+
+    
+     
+
+    
+     
+     </script>
+  
+</body>
+
+</html>
